@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import * as S from "../styles/address";
-import { Address } from "../interfaces/store";
+import { ACTIONS, Address } from "../interfaces/store";
 import { combineAddress } from "../utils";
 import AddressForm from "../components/AddressForm";
 
 const SelectAddress = () => {
   const {
-    state: { savedAddresses, selectedAddress },
+    state: { savedAddresses, selectedAddress }, dispatch
   } = useGlobalContext();
 
   const [selectedSavedAddress, setSelectedSavedAddress] = useState(selectedAddress || "");
+
+  useEffect(() => {
+    dispatch({ type: ACTIONS.SET_SELECTED_ADDRESS, payload: selectedSavedAddress });
+  }, [selectedSavedAddress, dispatch]);
 
   const onAddNewAddressSubmit = () => {
 
