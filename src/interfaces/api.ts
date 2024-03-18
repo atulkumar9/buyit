@@ -14,3 +14,8 @@ export interface ReducerDto {
   type: ACTIONS;
   payload?: Array<any>;
 }
+
+export interface ApiDataDto {
+  success: Boolean;
+  message: string;
+}

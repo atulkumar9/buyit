@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Roboto, FontWeight } from "./fontMixins";
 
 export const AddToBag = styled.div`
   position: absolute;
@@ -16,4 +17,11 @@ export const AddToBag = styled.div`
     width: 20px;
     padding-left: 10px;
   }
+`;
+
+export const Error = styled.div`
+  ${Roboto(20, 24, FontWeight.ITALIC)}
+  color: #f25555;
+  padding-top: 20px;
+  text-align: left;
 `;

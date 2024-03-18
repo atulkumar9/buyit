@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
-import Products from '../components/Products';
+import { useGlobalContext } from '../hooks/useGlobalContext';
+import * as S from "../styles/products";
+import Product from '../components/Products';
 
 const ProductSelection = () => {
-  console.log('ProductSelection reached!')
+  const {
+    state: { products },
+  } = useGlobalContext();
+  console.log("Product Selection!");
   return (
-    <div>
-      <Products />
-    </div>
-  )
+    <S.ProductsContainer>
+      <ul>
+        {products &&
+          products.length &&
+          products.map((product: any) => (
+            <Product key={product.id} info={product} />
+          ))}
+      </ul>
+    </S.ProductsContainer>
+  );
 };
 
 export default ProductSelection

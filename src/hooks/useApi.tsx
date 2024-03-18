@@ -1,9 +1,14 @@
 import React, { useReducer, useEffect } from 'react'
-import { ACTIONS, ApiDto, ReducerDto } from '../interfaces/api';
+import { ACTIONS, ApiDataDto, ApiDto, ReducerDto } from '../interfaces/api';
+
+const initialPostData: ApiDataDto = {
+  success: false,
+  message: ''
+}
 
 const initialState: ApiDto = {
   data: null,
-  loading: true,
+  loading: false,
   error: null,
 }
 
@@ -12,7 +17,6 @@ const reducer = (state: ApiDto, { type, payload }: ReducerDto) => {
     case ACTIONS.API_REQUEST:
       return { ...state, data: {}, loading: true };
     case ACTIONS.FETCH_DATA:
-      console.log("payload", payload);
       return { ...state, loading: false, data: payload };
     case ACTIONS.ERROR:
       return { ...state, data: {}, loading: false, error: payload };
@@ -21,7 +25,7 @@ const reducer = (state: ApiDto, { type, payload }: ReducerDto) => {
   }
 }
 
-const useFetch = (...apiHandlers: Array<Promise<any>>) => {
+export const useFetch = (...apiHandlers: Array<Promise<any>>) => {
   const [state, dispatch] = useReducer<React.Reducer<ApiDto, ReducerDto>>(reducer, initialState);
   useEffect(() => {
     dispatch({ type: ACTIONS.API_REQUEST });
@@ -34,8 +38,30 @@ const useFetch = (...apiHandlers: Array<Promise<any>>) => {
     }).catch((e: any) => {
       dispatch({ type: ACTIONS.ERROR, payload: e.message })
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return state;
 };
 
-export default useFetch;
+export const usePost = (apiCaller: Function) => {
+  const initialPostState = {
+    ...initialState,
+    data: initialPostData
+  }
+  const [state, dispatch] = useReducer<React.Reducer<ApiDto, ReducerDto>>(reducer, initialPostState);
+
+  const postData = async (data: any) => {
+    dispatch({ type: ACTIONS.API_REQUEST });
+    try {
+      const response = await apiCaller(data);
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+      dispatch({ type: ACTIONS.FETCH_DATA, payload: response })
+    } catch (e: any) {
+      dispatch({ type: ACTIONS.ERROR, payload: e.message })
+    }
+  };
+
+  return { ...state, postData };
+}

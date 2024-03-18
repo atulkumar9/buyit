@@ -5,12 +5,18 @@ export enum ACTIONS {
   SET_PRODUCTS = "set-products",
   SET_SAVED_ADDRESSES = "set-saved-addresses",
   SET_SELECTED_ADDRESS = "set-selected-address",
+  SET_FILLED_ADDRESS = "set-filled-address",
+  RESET_ALL_SELECTIONS = "reset-all-selections",
+  DISABLE_NEXT = "disable-next",
 }
 
 export type ProductsForOrder = {
   id: string;
   totalQuantity: number;
   finalPrice: number;
+  name: string;
+  imageUrl: string;
+  savings: number;
 };
 
 export interface Address {
@@ -28,7 +34,7 @@ export interface SelectedProducts {
   [key: string]: ProductsForOrder;
 }
 
-export interface SelectedProductDto {
+export interface StoreDto {
   products: Array<ProductDto>;
   savedAddresses: Array<Address>;
   selectedProducts: SelectedProducts;
@@ -36,6 +42,7 @@ export interface SelectedProductDto {
   shippingAddress: Address;
   billingAddress: Address;
   selectedAddress: string;
+  enableNext: Boolean;
 }
 
 export interface ProductDto {
@@ -51,4 +58,11 @@ export interface ProductDto {
 export interface ReducerDto {
   type: ACTIONS;
   payload: any;
+}
+
+export interface OrderDto {
+  id: string;
+  totalPrice: number;
+  selectedProducts: SelectedProducts;
+  shippingAddress: Address;
 }

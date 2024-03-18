@@ -1,9 +1,7 @@
-import React from 'react'
-import STEPS from '../constants/steps';
 import * as S from "../styles/stepTracker";
 import { Index } from '../interfaces/steps';
 
-const StepProgressBar = ({ index }: { index: number }) => {
+const StepProgressBar = ({ index, Steps }: { index: number, Steps: Array<any> }) => {
   const getStatus = (stepIndex: number) => {
     if (index === stepIndex) {
       return Index.CURRENT;
@@ -14,14 +12,16 @@ const StepProgressBar = ({ index }: { index: number }) => {
   }
   return (
     <S.StepProgressBar>
-      {STEPS.map((step, index) => {
+      {Steps.map((step, index) => {
         return (
-          <li key={step.name}>
-            {step.icon &&
-              <S.Logo icon={step.icon} status={getStatus(index)} />
-            }
+          <S.StepProgressBarListItem key={step.name} status={getStatus(index)}>
+            <S.LogoContainer status={getStatus(index)}>
+              {step.icon &&
+                <S.Logo icon={step.icon} status={getStatus(index)} />
+              }
+            </S.LogoContainer>
             <S.Label status={getStatus(index)}>{step.label}</S.Label>
-          </li>
+          </S.StepProgressBarListItem>
 
         )
       })}
