@@ -1,13 +1,13 @@
 import React, { Dispatch, createContext, useContext, useReducer } from "react";
 import {
   ACTIONS,
-  SelectedProductDto,
+  StoreDto,
   ReducerDto,
   Address,
   SelectedProducts,
 } from "../interfaces/store";
 
-const initialAddressState: Address = {
+export const initialAddressState: Address = {
   fullName: '',
   addressLine1: '',
   addressLine2: '',
@@ -18,7 +18,7 @@ const initialAddressState: Address = {
   id: '',
 }
 
-const initialState: SelectedProductDto = {
+const initialState: StoreDto = {
   products: [],
   savedAddresses: [],
   selectedProducts: {},
@@ -26,9 +26,12 @@ const initialState: SelectedProductDto = {
   shippingAddress: initialAddressState,
   billingAddress: initialAddressState,
   selectedAddress: "",
+  enableNext: false
 };
 
-const reducer = (state: SelectedProductDto, { type, payload }: ReducerDto) => {
+const reducer = (state: StoreDto, { type, payload }: ReducerDto) => {
+  let enableNext = false;
+  console.log(type);
   switch (type) {
     case ACTIONS.ADD_PRODUCT_IN_BAG:
       let selectedProducts: SelectedProducts = {};
@@ -36,12 +39,16 @@ const reducer = (state: SelectedProductDto, { type, payload }: ReducerDto) => {
         selectedProducts = { ...state.selectedProducts }
         selectedProducts[payload.id] = payload;
       }
-      return { ...state, selectedProducts };
+      return { ...state, selectedProducts, enableNext: true };
     case ACTIONS.REMOVE_PRODUCT_FROM_BAG:
       if (state.selectedProducts.hasOwnProperty(payload)) {
         delete state.selectedProducts[payload];
       }
-      return { ...state };
+      enableNext = true;
+      if (!Object.keys(state.selectedProducts).length) {
+        enableNext = false;
+      }
+      return { ...state, enableNext };
     case ACTIONS.SET_TOTAL_PRICE_OF_BAG:
       return { ...state, totalPrice: payload };
     case ACTIONS.SET_PRODUCTS:
@@ -49,14 +56,30 @@ const reducer = (state: SelectedProductDto, { type, payload }: ReducerDto) => {
     case ACTIONS.SET_SAVED_ADDRESSES:
       return { ...state, savedAddresses: payload }
     case ACTIONS.SET_SELECTED_ADDRESS:
-      return { ...state, selectedAddress: payload }
+      enableNext = false;
+      if (payload) {
+        enableNext = true
+      }
+      return { ...state, selectedAddress: payload, enableNext }
+    case ACTIONS.SET_FILLED_ADDRESS:
+      return { ...state, shippingAddress: payload ?? initialAddressState }
+    case ACTIONS.RESET_ALL_SELECTIONS:
+      let products = state.products;
+      let savedAddresses = state.savedAddresses;
+      return { ...initialState, products, savedAddresses };
+    case ACTIONS.DISABLE_NEXT:
+      enableNext = false;
+      if (state.selectedAddress) {
+        enableNext = true
+      }
+      return { ...state, enableNext }
     default:
       return { ...state };
   }
 };
 
 interface GlobalStoreContextType {
-  state: SelectedProductDto;
+  state: StoreDto;
   dispatch: Dispatch<ReducerDto>;
 }
 
@@ -64,8 +87,7 @@ const GlobalStoreContext = createContext<GlobalStoreContextType | undefined>(und
 
 
 export const GlobalStoreProvider = ({ children }: { children: React.ReactNode }) => {
-  console.log("GlobalStoreProvider reached")
-  const [state, dispatch] = useReducer<React.Reducer<SelectedProductDto, ReducerDto>>(reducer, initialState);
+  const [state, dispatch] = useReducer<React.Reducer<StoreDto, ReducerDto>>(reducer, initialState);
   return (
     <GlobalStoreContext.Provider value={{ state, dispatch }}>
       {children}
