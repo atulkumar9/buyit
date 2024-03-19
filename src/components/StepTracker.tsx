@@ -64,6 +64,8 @@ const StepTracker = () => {
     dispatch({ type: ACTIONS.RESET_ALL_SELECTIONS, payload: null })
   }
 
+  console.log('error', error);
+
   return (
     <>
       {<Loader loading={loading} />}
@@ -75,13 +77,13 @@ const StepTracker = () => {
           <>
             <S.StepContainer>
               <S.ImgContainer hide={index === 0}>
-                <S.Button enabled={true} onClick={() => onPreviousClick()}>
+                <S.Button data-automation-id="prev-step-btn" enabled={true} onClick={() => onPreviousClick()}>
                   Back
                 </S.Button>
               </S.ImgContainer>
               <StepProgressBar index={index} Steps={Steps} />
               <S.ImgContainer hide={index === Steps.length - 1}>
-                <S.Button disabled={!enableNext} enabled={enableNext} onClick={() => onNextClick()}>
+                <S.Button data-automation-id="next-step-btn" disabled={!enableNext} enabled={enableNext} onClick={() => onNextClick()}>
                   Next
                 </S.Button>
               </S.ImgContainer>

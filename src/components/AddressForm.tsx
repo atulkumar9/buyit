@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, useMemo } from "react";
 import { ACTIONS } from "../interfaces/store";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import * as S from "../styles/address";
-import { REQUIRED_FIELD } from "../constants/appConstants";
+import { COUNTRY_LIST, REQUIRED_FIELD } from "../constants/appConstants";
 
 interface Props {
   onSubmit: Function;
@@ -14,7 +14,7 @@ const AddressForm: React.FC<Props> = ({ onSubmit }) => {
     dispatch,
   } = useGlobalContext();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     validateFields();
     const { name, value } = e.target;
     const payload = {
@@ -121,13 +121,19 @@ const AddressForm: React.FC<Props> = ({ onSubmit }) => {
         </label>
         <label>
           <span>Country:</span>
-          <input
+          <select name={"country"} value={shippingAddress.country} onChange={handleChange}>
+            <option value={""}>Select</option>
+            {COUNTRY_LIST.map((country) => {
+              return <option value={country.name}>{country.name}</option>
+            })}
+          </select>
+          {/* <input
             type="text"
             name="country"
             value={shippingAddress.country}
             onChange={handleChange}
             required
-          />
+          /> */}
         </label>
       </S.FormColumn>
       <S.SaveAddressButton enabled={isFormValid.valid} type="submit">

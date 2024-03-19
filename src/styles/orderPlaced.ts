@@ -13,7 +13,6 @@ export const OrderPlacedContainer = styled.div`
   }
   img {
     width: 100px;
-    padding-left: 20px;
   }
 `;
 

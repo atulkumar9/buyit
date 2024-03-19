@@ -55,3 +55,49 @@ export const SuccessMockForUseFetch = {
   loading: false,
   error: null,
 };
+
+export const FilureMockForUseFetch = {
+  data: {},
+  loading: false,
+  error: "test error",
+};
+
+export const MockStateAfterSelectingProduct = {
+  products,
+  savedAddresses: address,
+  selectedProducts: {
+    "1": {
+      id: "1",
+      totalQuantity: 1,
+      finalPrice: 8295,
+      name: products[0].name,
+      imageUrl: products[0].imageUrl,
+      savings: 0,
+    },
+  },
+  totalPrice: 0,
+  shippingAddress: initialAddressState,
+  billingAddress: initialAddressState,
+  selectedAddress: "",
+  enableNext: true,
+};
+
+export const MockStateAfterSelectingAddress = {
+  products,
+  savedAddresses: address,
+  selectedProducts: {
+    "1": {
+      id: "1",
+      totalQuantity: 1,
+      finalPrice: 8295,
+      name: products[0].name,
+      imageUrl: products[0].imageUrl,
+      savings: 0,
+    },
+  },
+  totalPrice: 0,
+  shippingAddress: initialAddressState,
+  billingAddress: initialAddressState,
+  selectedAddress: "2",
+  enableNext: true,
+};

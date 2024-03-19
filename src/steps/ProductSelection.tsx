@@ -6,16 +6,16 @@ const ProductSelection = () => {
   const {
     state: { products },
   } = useGlobalContext();
-  console.log("Product Selection!");
   return (
     <S.ProductsContainer>
-      <ul>
-        {products &&
-          products.length &&
-          products.map((product: any) => (
-            <Product key={product.id} info={product} />
-          ))}
-      </ul>
+      {products && products.length ?
+        <ul>
+          {
+            products.map((product: any) => (
+              <Product key={product.id} info={product} />
+            ))}
+        </ul> : null
+      }
     </S.ProductsContainer>
   );
 };
