@@ -48,12 +48,26 @@ export const FormColumn = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-between;
-    input {
+    input,
+    select {
       width: 60%;
       ${PtSans(20, 24)}
       border-radius: 5px;
       border-style: none;
-      padding: 4px 8px;
+      padding: 5px 8px;
+    }
+    select {
+      background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png)
+        no-repeat right #fff;
+      -webkit-appearance: none;
+      background-position-x: 94%;
+      appearance: none;
+      box-sizing: content-box;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 11%;
+      width: 50%;
     }
     span {
       width: 40%;

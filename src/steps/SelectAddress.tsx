@@ -26,7 +26,6 @@ const SelectAddress = () => {
 
   // On changing the address;
   const setSelectedAddress = (id: string) => {
-    console.log(id);
     dispatch({
       type: ACTIONS.SET_SELECTED_ADDRESS,
       payload: id,

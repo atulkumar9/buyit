@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Roboto, FontWeight } from "./fontMixins";
+import { Roboto, FontWeight, PtSans } from "./fontMixins";
 
 export const AddToBag = styled.div`
   position: absolute;
@@ -24,4 +24,22 @@ export const Error = styled.div`
   color: #f25555;
   padding-top: 20px;
   text-align: left;
+`;
+
+export const FallbackContainer = styled.div`
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  p {
+    ${PtSans(20, 24, FontWeight.BOLD)}
+  }
+  h1 {
+    ${PtSans(60, 66, FontWeight.BOLD)}
+  }
+  img {
+    width: 300px;
+  }
 `;
